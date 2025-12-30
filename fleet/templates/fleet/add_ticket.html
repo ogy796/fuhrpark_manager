@@ -1,0 +1,31 @@
+{% extends 'fleet/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h2>⚠️ Schaden melden</h2>
+                <small>für Fahrzeug: {{ vehicle.license_plate }}</small>
+            </div>
+            
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">Speichern</button>
+                        <a href="{% url 'vehicle_detail' vehicle.id %}" class="btn btn-secondary">Abbrechen</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

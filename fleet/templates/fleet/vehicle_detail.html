@@ -1,0 +1,69 @@
+{% extends 'fleet/base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ vehicle.license_plate }}</h1>
+        <a href="{% url 'vehicle_list' %}" class="btn btn-outline-secondary">⬅️ Zurück</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Fahrzeug-Daten
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ vehicle.brand_model }}</h5>
+                    <p class="card-text">Baujahr: <strong>{{ vehicle.year_of_manufacture }}</strong></p>
+                    <p class="card-text">
+                        Letzter Service: 
+                        {% if vehicle.last_service %}
+                            <span class="text-success">{{ vehicle.last_service }}</span>
+                        {% else %}
+                            <span class="text-danger">⚠️ Nie!</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    Fahrer & Status
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% if vehicle.driver %}
+                            <h4>👤 {{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</h4>
+                            <small class="text-muted">Führerschein: {{ vehicle.driver.license_number }}</small>
+                        {% else %}
+                            <h4 class="text-warning">Kein Fahrer zugewiesen</h4>
+                        {% endif %}
+                    </p>
+                    <hr>
+                    <a href="{% url 'add_ticket' vehicle.id %}" class="btn btn-danger w-100">
+                        ⚠️ Neuen Schaden melden
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Wartungs-Historie</h3>
+    <div class="list-group mb-5">
+        {% for ticket in vehicle.maintenanceticket_set.all %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ ticket.title }}</h5>
+                    <small>Status: <strong>{{ ticket.get_status_display }}</strong></small>
+                </div>
+                <p class="mb-1">{{ ticket.description }}</p>
+                <small class="text-muted">Erstellt am: {{ ticket.created_at|date:"d.m.Y" }}</small>
+            </div>
+        {% empty %}
+            <div class="alert alert-success">Keine offenen Tickets. Alles super! 🟢</div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
