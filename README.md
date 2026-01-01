@@ -1,6 +1,6 @@
 # Fuhrpark Manager
 
-Ein Django-basiertes Web-System zur digitalen Verwaltung von Fahrzeugflotten, Werkstatt-Terminen und Kostenkontrolle.
+Ein Django-basiertes Web-System zur digitalen Verwaltung von Fahrzeugflotten, Werkstatt-Terminen.
 
 Entwickelt als Portfolio-Projekt, um komplexe Geschäftslogik und Prozessverwaltung in eine moderne Web-Architektur zu übersetzen.
 
