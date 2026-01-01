@@ -63,4 +63,4 @@ Du kannst das Projekt lokal klonen und testen:
 ## Über den Entwickler
 **Aspiring Software Developer**
 
-Ich komme ursprünglich aus der Jura-Welt, habe aber gemerkt, dass mir das aktive Bauen von Lösungen mehr liegt als die Theorie. Dieses Projekt ist mein Beweis, dass ich komplexe Logik nicht nur verstehen, sondern auch programmieren kann. Es ist mein erstes großes Full-Stack Projekt.
+Ich komme ursprünglich aus der Jura-Welt, habe aber gemerkt, dass mir das aktive Bauen von Lösungen mehr liegt als die Theorie. Dies ist mein erstes großes Full-Stack Projekt.
