@@ -20,7 +20,7 @@ Besonderer Fokus lag auf der **Backend-Logik** und der **Daten-Integrität**, in
 * **Frontend:** HTML5, CSS3 (Bootstrap Integration planned)
 * **Tools:** Git, Virtualenv
 
-## 🔮 Geplante Erweiterungen (Roadmap)
+## Geplante Erweiterungen (Roadmap)
 Ich arbeite aktiv an der Weiterentwicklung. Als nächstes geplant:
 * [ ] **Dashboard:** Grafische Auswertung der monatlichen Kosten (Charts).
 * [ ] **PDF-Export:** Automatische Erstellung von Wartungsberichten.
