@@ -1,6 +1,6 @@
 # Fuhrpark Manager
 
-Ein Django-basiertes Web-System zur digitalen Verwaltung von Fahrzeugflotten, Werkstatt-Terminen.
+Ein Django-basiertes Web-System zur digitalen Verwaltung von Fahrzeugflotten, Fahrern und Wartungstickets.
 
 Entwickelt als Portfolio-Projekt, um komplexe Geschäftslogik und Prozessverwaltung in eine moderne Web-Architektur zu übersetzen.
 
@@ -10,9 +10,12 @@ Besonderer Fokus lag auf der **Backend-Logik** und der **Daten-Integrität**, in
 
 ## Features
 * **Fahrzeug-Verwaltung (CRUD):** Anlegen, Bearbeiten und Löschen von LKW/PKW-Datensätzen.
+* **Suchfunktion:** Filtern nach Kennzeichen oder Modell (Oder-Logik)
+* **PDF-Export:** Automatische Erstellung einer Fahrzeug-Akte (inkl. Stammdaten & Wartungshistorie)
 * **Status-Tracking:** Echtzeit-Übersicht über den Fahrzeugstatus (z. B. *In Werkstatt*, *Verfügbar*).
 * **User-Authentifizierung:** Login-System für Disponenten/Verwalter (Django Auth).
 * **Datenbank-Architektur:** Optimierte Relationen zwischen Fahrzeugen und Historie (SQLite/PostgreSQL ready).
+* **Ticket-System:** Erfassen von Schäden und Wartungen.
 
 ## Tech Stack
 * **Backend:** Python 3.x, Django 5.x
@@ -22,8 +25,6 @@ Besonderer Fokus lag auf der **Backend-Logik** und der **Daten-Integrität**, in
 
 ## Geplante Erweiterungen (Roadmap)
 Ich arbeite aktiv an der Weiterentwicklung. Als nächstes geplant:
-* [ ] **Dashboard:** Grafische Auswertung der monatlichen Kosten (Charts).
-* [ ] **PDF-Export:** Automatische Erstellung von Wartungsberichten.
 * [ ] **UI-Polish:** Farbliche Status-Indikatoren ("Ampel-System") für bessere Übersicht.
 
 ## Installation & Setup
