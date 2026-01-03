@@ -1,78 +1,141 @@
-{% extends 'fleet/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>{{ vehicle.license_plate }}</h1>
 
-        <div>
-            <a href="{% url 'vehicle_pdf' vehicle.id %}" class="btn btn-danger me-2">
-                PDF Exportieren
-            </a>
-
-            <a href="{% url 'vehicle_list' %}" class="btn btn-outline-secondary">
-                ⬅️ Zurück
-            </a>
-        </div>
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h1 class="display-6 fw-bold text-dark">{{ vehicle.license_plate }}</h1>
+        <p class="text-muted mb-0">
+            {{ vehicle.brand_model }} &bull; BJ {{ vehicle.year_of_manufacture }}
+        </p>
     </div>
+    
+    <div class="btn-group">
+        <a href="{% url 'vehicle_list' %}" class="btn btn-outline-secondary">
+            &larr; Liste
+        </a>
+        
+        <a href="{% url 'vehicle_pdf' vehicle.pk %}" class="btn btn-outline-dark">
+            📄 PDF
+        </a>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    Fahrzeug-Daten
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ vehicle.brand_model }}</h5>
-                    <p class="card-text">Baujahr: <strong>{{ vehicle.year_of_manufacture }}</strong></p>
-                    <p class="card-text">
-                        Letzter Service: 
-                        {% if vehicle.last_service %}
-                            <span class="text-success">{{ vehicle.last_service }}</span>
-                        {% else %}
-                            <span class="text-danger">Nie!</span>
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-        </div>
+        <a href="{% url 'add_ticket' vehicle.pk %}" class="btn btn-danger">
+             Schaden melden
+        </a>
+    </div>
+</div>
 
-        <div class="col-md-6">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    Fahrer & Status
-                </div>
-                <div class="card-body">
-                    <p>
-                        {% if vehicle.driver %}
-                            <h4>👤 {{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</h4>
-                            <small class="text-muted">Führerschein: {{ vehicle.driver.license_number }}</small>
-                        {% else %}
-                            <h4 class="text-warning">Kein Fahrer zugewiesen</h4>
-                        {% endif %}
-                    </p>
-                    <hr>
-                    <a href="{% url 'add_ticket' vehicle.id %}" class="btn btn-danger w-100">
-                        Neuen Schaden melden
-                    </a>
-                </div>
+<div class="row g-4">
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">Fahrzeugdaten</div>
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="text-muted w-50">Hersteller/Modell</td>
+                            <td class="fw-medium">{{ vehicle.brand_model }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Baujahr</td>
+                            <td class="fw-medium">{{ vehicle.year_of_manufacture }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Letzter Service</td>
+                            <td class="fw-medium">
+                                {{ vehicle.last_service|date:"d.m.Y"|default:"Ausstehend" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <h3 class="mt-4">Wartungs-Historie</h3>
-    <div class="list-group mb-5">
-        {% for ticket in vehicle.maintenanceticket_set.all %}
-            <div class="list-group-item">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ ticket.title }}</h5>
-                    <small>Status: <strong>{{ ticket.get_status_display }}</strong></small>
-                </div>
-                <p class="mb-1">{{ ticket.description }}</p>
-                <small class="text-muted">Erstellt am: {{ ticket.created_at|date:"d.m.Y" }}</small>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">Status & Fahrer</div>
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="text-muted w-50">Aktueller Fahrer</td>
+                            <td>
+                                {% if vehicle.driver %}
+                                    <div class="fw-bold">{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</div>
+                                    <div class="small text-muted">Führerschein bis: {{ vehicle.driver.license_expiry|date:"d.m.Y" }}</div>
+                                {% else %}
+                                    <span class="text-muted fst-italic">Kein Fahrer zugewiesen</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Status</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                    Aktiv
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        {% empty %}
-            <div class="alert alert-success">Keine offenen Tickets.</div>
-        {% endfor %}
+        </div>
     </div>
+
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Offene Tickets & Wartung</span>
+                <a href="{% url 'add_ticket' vehicle.pk %}" class="btn btn-sm btn-light text-muted border">
+                    + Neuer Eintrag
+                </a>
+            </div>
+            
+            {% with tickets=vehicle.maintenanceticket_set.all %}
+            {% if tickets %}
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">Datum</th>
+                                <th>Titel</th>
+                                <th>Status</th>
+                                <th class="pe-4">Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in tickets %}
+                            <tr>
+                                <td class="ps-4 text-muted small">{{ ticket.created_at|date:"d.m.Y" }}</td>
+                                <td class="fw-medium">{{ ticket.title }}</td>
+                                <td>
+                                    {% if ticket.status == 'new' %}
+                                        <span class="badge bg-danger-subtle text-danger">Neu</span>
+                                    {% elif ticket.status == 'in_progress' %}
+                                        <span class="badge bg-warning-subtle text-warning-emphasis">In Arbeit</span>
+                                    {% else %}
+                                        <span class="badge bg-success-subtle text-success">Erledigt</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-muted small pe-4">{{ ticket.description|truncatechars:60 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="p-5 text-center text-muted">
+                    Keine Tickets oder Wartungseinträge vorhanden.
+                </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

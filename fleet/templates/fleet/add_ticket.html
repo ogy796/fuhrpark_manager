@@ -1,31 +1,82 @@
-{% extends 'fleet/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-6">
         
-        <div class="card shadow">
-            <div class="card-header bg-danger text-white">
-                <h2>⚠️ Schaden melden</h2>
-                <small>für Fahrzeug: {{ vehicle.license_plate }}</small>
-            </div>
-            
-            <div class="card-body">
+        <div class="mb-4 text-center">
+            <h1 class="h3 fw-bold text-dark">Neues Ticket erstellen</h1>
+            <p class="text-muted">
+                Meldung für Fahrzeug: <span class="fw-bold text-primary">{{ vehicle.license_plate }}</span> ({{ vehicle.brand_model }})
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                
                 <form method="post">
                     {% csrf_token %}
                     
-                    <div class="mb-3">
+                    <div class="mb-4 ticket-form">
                         {{ form.as_p }}
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-danger btn-lg">Speichern</button>
-                        <a href="{% url 'vehicle_detail' vehicle.id %}" class="btn btn-secondary">Abbrechen</a>
+                        <button type="submit" class="btn btn-primary py-2 fw-medium">
+                            Ticket speichern
+                        </button>
+                        <a href="{% url 'vehicle_detail' vehicle.id %}" class="btn btn-outline-secondary py-2 border-0">
+                            Abbrechen
+                        </a>
                     </div>
                 </form>
+                
             </div>
+        </div>
+
+        <div class="text-center mt-3 text-muted small">
+            Das Ticket wird sofort an die Werkstatt übermittelt.
         </div>
 
     </div>
 </div>
+
+<style>
+    .ticket-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .ticket-form input[type="text"],
+    .ticket-form textarea,
+    .ticket-form select {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        font-family: inherit;
+        transition: border-color 0.2s;
+        margin-bottom: 1.2rem;
+    }
+
+    .ticket-form input:focus,
+    .ticket-form textarea:focus,
+    .ticket-form select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .helptext {
+        display: block;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: -0.8rem;
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock %}

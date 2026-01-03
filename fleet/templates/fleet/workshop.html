@@ -1,61 +1,83 @@
-{% extends 'fleet/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="mb-4">🛠️ Werkstatt-Übersicht</h1>
 
-    <div class="card shadow">
-        <div class="card-body">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Fahrzeug</th>
-                        <th>Problem</th>
-                        <th>Status</th>
-                        <th>Gemeldet am</th>
-                        <th>Aktion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ticket in tickets %}
-                    <tr>
-                        <td>
-                            <strong>{{ ticket.vehicle.license_plate }}</strong><br>
-                            <small class="text-muted">{{ ticket.vehicle.brand_model }}</small>
-                        </td>
-                        <td>
-                            {{ ticket.title }}<br>
-                            <small class="text-muted">{{ ticket.description|truncatewords:5 }}</small>
-                        </td>
-                        <td>
-                            {% if ticket.status == 'new' %}
-                                <span class="badge bg-danger">Neu</span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark">In Arbeit</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ ticket.created_at|date:"d.m.Y" }}</td>
-                        <td>
-                            <a href="{% url 'vehicle_detail' ticket.vehicle.id %}" class="btn btn-sm btn-outline-primary">
-                                Zum LKW ➡️
-                            </a>
-                            
-                            <form action="{% url 'close_ticket' ticket.id %}" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-success">
-                                    Fertig
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center p-4">
-                            <span class="text-success">Keine offenen Tickets!</span>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="mb-4">
+    <h1 class="h2 mb-1 text-dark">Werkstatt-Dashboard</h1>
+    <p class="text-muted">Übersicht aller offenen Wartungsarbeiten und Reparaturen.</p>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4" style="width: 25%;">Fahrzeug</th>
+                    <th style="width: 30%;">Problem</th>
+                    <th>Status</th>
+                    <th>Gemeldet</th>
+                    <th class="text-end pe-4">Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td class="ps-4">
+                        <div class="fw-bold text-dark">{{ ticket.vehicle.license_plate }}</div>
+                        <div class="small text-muted">{{ ticket.vehicle.brand_model }}</div>
+                    </td>
+
+                    <td>
+                        <div class="fw-medium text-dark">{{ ticket.title }}</div>
+                        <div class="small text-muted text-truncate" style="max-width: 250px;">
+                            {{ ticket.description }}
+                        </div>
+                    </td>
+
+                    <td>
+                        {% if ticket.status == 'new' %}
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                                Neu
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                                In Arbeit
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-muted small">
+                        {{ ticket.created_at|date:"d.m.Y" }}
+                    </td>
+
+                    <td class="text-end pe-4">
+                        <a href="{% url 'vehicle_detail' ticket.vehicle.id %}" class="btn btn-sm btn-outline-secondary me-1">
+                            Details
+                        </a>
+                        
+                        <form action="{% url 'close_ticket' ticket.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Abschließen
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5">
+                        <div class="text-muted mb-2">Alles erledigt!</div>
+                        <p class="small text-secondary">Momentan gibt es keine offenen Tickets.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    
+    <div class="card-footer bg-white border-top text-muted small ps-4">
+        Offene Tickets: {{ tickets|length }}
+    </div>
+</div>
+
 {% endblock %}

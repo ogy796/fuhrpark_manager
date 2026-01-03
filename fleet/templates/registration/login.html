@@ -1,26 +1,64 @@
-{% extends 'fleet/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow mt-5">
-            <div class="card-header bg-primary text-white">
-                <h4>Bitte einloggen</h4>
-            </div>
-            <div class="card-body">
+<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-md-5 col-lg-4">
+        
+        <div class="text-center mb-4">
+            <h1 class="h3 fw-bold text-dark">Fuhrpark-Manager</h1>
+            <p class="text-muted">Bitte melden Sie sich an, um fortzufahren.</p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
                 <form method="post">
                     {% csrf_token %}
                     
-                    <div class="mb-3">
+                    <div class="mb-4">
                         {{ form.as_p }}
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Einloggen</button>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary py-2 fw-medium">
+                            Anmelden
+                        </button>
+                    </div>
                     
                     <input type="hidden" name="next" value="{{ next }}">
                 </form>
             </div>
         </div>
+
+        <div class="text-center mt-4 text-muted small">
+
+        </div>
+
     </div>
 </div>
+
+<style>
+    
+    form p { margin-bottom: 1rem; }
+    form label { 
+        display: block; 
+        margin-bottom: 0.4rem; 
+        color: #64748b; 
+        font-size: 0.9rem; 
+        font-weight: 500;
+    }
+
+    form input[type="text"], 
+    form input[type="password"] {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        display: block;
+    }
+    form input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+</style>
 {% endblock %}
